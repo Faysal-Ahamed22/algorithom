@@ -1,0 +1,21 @@
+ll phi( ll n ){
+
+        ll ret =n; 
+        for(  auto p: prime) //prime from seave
+        {
+            if(1LL* p*p>n || n==0)break; 
+            if(n%p==0)
+            {
+                ret/=p; 
+                ret*=(p-1);
+                while(n%p==0)n/=p; 
+            }
+        }
+        if(n>1)
+        {
+            ret/=n; 
+            ret*=(n-1); 
+        }
+        return ret; 
+    
+}
