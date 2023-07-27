@@ -1,0 +1,16 @@
+ll modPow(ll base, ll power)
+{
+    ll ret=1; 
+    while(power>0)
+    {
+        if(power%2)
+        {
+            ret*=base; 
+            ret%=MOD;
+        }
+        power/=2;
+        base*=base; 
+        base%=MOD;
+    }
+    return ret; 
+}
