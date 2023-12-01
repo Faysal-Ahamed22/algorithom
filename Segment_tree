@@ -1,0 +1,100 @@
+/******************************************************/
+/******************************************************/
+/**            BISMILLAHIR RAHMANIR RAHIM            **/
+/**         Md.Faysal Ahamed - ER3N YAGER            **/
+/**  Department of Computer Science and Engineering  **/
+/**               Barisal University                 **/
+/**               It's time to Roar.                 **/
+/******************************************************/
+/******************************************************/
+#include<bits/stdc++.h>
+using namespace std;
+#define ll   long long
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define    gcd(a,b)      __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=2e5+123; 
+ll t[mx*4] , a[mx];
+void ini ( ll id , ll start , ll end )
+{
+    if(start==end) {
+        t[id]=a[start];
+        return; 
+    }
+
+    ll mid=(start+end)>>1;
+    ini ( id*2 , start , mid );
+    ini ( id*2+1 , mid+1, end);
+
+     t[id]=t[id*2]+t[id*2+1];
+
+}
+
+void upd ( ll id, ll b, ll e, ll i, ll val )
+{
+    if ( b > i || e < i ) return;
+    if ( b == e && b == i ) {
+        t[id] = val;
+        return;
+    }
+ 
+    ll mid = ( b + e ) >> 1;
+    upd ( id*2, b, mid, i, val );
+    upd ( id*2+1, mid+1, e, i, val );
+ 
+    t[id] = t[id*2] + t[id*2+1];
+}
+
+ll ask( ll id, ll start, ll end, ll l, ll r)
+{
+    if(start>r || end<l)return 0; 
+    if( l<=start && end<=r)
+    {
+        return t[id];
+    }
+    ll mid=(start+end)>>1; 
+    ll leftsum=ask( id*2, start, mid, l, r);
+    ll rightsum=ask( id*2+1, mid+1, end, l, r );
+
+    return leftsum+rightsum; 
+}
+
+
+void solve(){
+
+    ll n,q; 
+    cin>>n>>q;
+    for(ll i=1; i<=n; i++)cin>>a[i];
+    ini(1,1,n);
+    while(q--){
+
+      ll typ;
+        cin >> typ;
+        if ( typ == 1 ) {
+           ll k, u;
+            cin >> k >> u;
+            upd ( 1, 1, n, k, u ); /// O(log2(n))
+        }
+        else {
+            ll l, r;
+            cin >> l >> r;
+            cout << ask ( 1, 1, n, l, r ) << endl; /// O(log2(n))
+        }
+      
+    }
+
+  
+}
+
+int main()
+{
+    optimize();
+    solve();
+   
+}
+/*****************  ALHAMDULILLAH  *****************/
