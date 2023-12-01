@@ -1,0 +1,45 @@
+const int mx = 2e5+123;
+ll t[mx*4], a[mx];
+ 
+void init ( int id, int b, int e )
+{
+    if ( b == e ) {
+        t[id] = a[b];
+        return;
+    }
+ 
+    int mid = ( b + e ) >> 1;
+    init ( id*2, b, mid );
+    init ( id*2+1, mid+1, e );
+ 
+    t[id] = t[id*2] + t[id*2+1];
+}
+ 
+void upd ( int id, int b, int e, int i, int val )
+{
+    if ( b > i || e < i ) return;
+    if ( b == e && b == i ) {
+        t[id] = val;
+        return;
+    }
+ 
+    int mid = ( b + e ) >> 1;
+    upd ( id*2, b, mid, i, val );
+    upd ( id*2+1, mid+1, e, i, val );
+ 
+    t[id] = t[id*2] + t[id*2+1];
+}
+ 
+ll ask ( int id, int b, int e, int l, int r )
+{
+    if ( b > r || e < l ) return 0;
+    if ( l <= b && e <= r ) {
+        return t[id];
+    }
+ 
+    int mid = ( b + e ) >> 1;
+    ll sumL = ask ( id*2, b, mid, l, r );
+    ll sumR = ask ( id*2+1, mid+1, e, l, r );
+ 
+    return sumL + sumR;
+}
