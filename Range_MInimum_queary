@@ -1,0 +1,47 @@
+const ll mx=2e5+123; 
+const ll inf=2e9; 
+ll t[mx*3],a[mx];
+
+void ini( ll id, ll b, ll e)
+{
+    if(b==e){
+        t[id]=a[b];
+        return; 
+    }
+
+    ll mid=( b+ e)>>1; 
+    ini ( id*2, b, mid);
+    ini ( id*2+1 , mid+1, e);
+    t[id]=min( t[id*2], t[id*2+1]);
+}
+
+void upd( ll id, ll b, ll e, ll i, ll val)
+{
+    if( i <b || i>e)return ; 
+    if( i==b && i==e){
+        t[id]=val; 
+        return; 
+    }
+    ll mid=(b+e)>>1; 
+    upd( id*2, b, mid, i, val);
+    upd( id*2+1, mid+1, e, i, val);
+      t[id]=min( t[id*2], t[id*2+1]);
+
+
+
+}
+
+ll ask ( ll id, ll b, ll e, ll l, ll r)
+{
+
+     if(b>r || e<l)return inf; 
+     if( b>=l && e<=r){
+        return t[id];
+     }
+
+      ll mid=(b+e)>>1; 
+   ll left= ask( id*2, b, mid, l,r);
+   ll right= ask( id*2+1, mid+1, e, l, r);
+     return min( left, right);
+   
+}
