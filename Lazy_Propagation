@@ -1,0 +1,109 @@
+/******************************************************/
+/******************************************************/
+/**            BISMILLAHIR RAHMANIR RAHIM            **/
+/**         Md.Faysal Ahamed - ER3N YAGER            **/
+/**  Department of Computer Science and Engineering  **/
+/**               Barisal University                 **/
+/**               It's time to Roar.                 **/
+/******************************************************/
+/******************************************************/
+#include<bits/stdc++.h>
+using namespace std;
+#define ll   long long
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define    gcd(a,b)      __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=2e5+123; 
+bool vis[mx*3];
+ll prop[mx*3];
+ll a[mx];
+
+void shift( ll id )
+{
+    prop[id*2]+=prop[id];
+    prop[id*2+1]+=prop[id];
+
+    vis[id*2]=vis[id*2+1]=1; 
+    prop[id]=vis[id]=0; 
+
+}
+
+void init( ll id, ll b, ll e)
+{
+    if(b==e){
+        prop[id]=a[b];
+        return ; 
+    }
+
+    ll mid=(b+e)>>1; 
+
+    init ( id*2, b, mid);
+    init( id*2+1 , mid+1, e);
+
+}
+
+void upd ( ll id, ll b, ll e, ll i, ll j, ll val )
+{
+    if ( b > j || e < i ) return;
+    if ( b >= i && e <= j ) {
+        prop[id] += val;
+        vis[id] = 1;
+        return;
+    }
+ 
+    ll mid = ( b + e ) >> 1;
+    upd ( id*2, b, mid, i, j, val );
+    upd ( id*2+1, mid+1, e, i, j, val );
+}
+
+ll ask ( ll id, ll b, ll e, ll i )
+{
+    if ( i < b || i > e ) return 0;
+    if ( b == e && i == b ) return prop[id];
+ 
+    if ( vis[id] ) shift ( id );
+ 
+    ll mid = ( b + e ) >> 1;
+    ll left = ask ( id*2, b, mid, i );
+    ll right = ask ( id*2+1, mid+1, e, i );
+ 
+    return left + right;
+}
+
+void solve(){
+
+    ll n,q ;
+    cin>>n>>q; 
+    for(ll i=1; i<=n; i++)cin>>a[i];
+    init( 1, 1, n);
+    while(q--)
+    {
+        ll type; 
+        cin>>type; 
+        if(type==1){
+            ll a, u, b; 
+            cin>>a>>b>>u; 
+            upd( 1, 1, n, a, b, u);
+        }
+        else{
+            ll k; 
+            cin>>k; 
+            cout<<ask( 1, 1, n, k)<<endl;
+        }
+    }
+    
+}
+
+int main()
+{
+    optimize();
+  
+        solve();
+    
+}
+/*****************  ALHAMDULILLAH  *****************/
