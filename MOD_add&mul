@@ -1,0 +1,16 @@
+const ll M=1e9+7; 
+
+ll MOD(ll val)
+{
+    return ((val%M+M)%M);
+}
+
+ll MOD_ADD( ll a, ll b)
+{
+    return MOD(MOD(a)+MOD(b)); 
+}
+
+ll MOD_MUL( ll a, ll b)
+{
+    return MOD(MOD(a)*MOD(b)); 
+}
