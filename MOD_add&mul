@@ -14,3 +14,16 @@ ll MOD_MUL( ll a, ll b)
 {
     return MOD(MOD(a)*MOD(b)); 
 }
+
+long long MOD_POW(int x, int y){
+    if(y==0) return 1LL;
+    if(y==1) return mod(x);
+    long long res=1;
+    while(y){
+        if(y%2==1)
+            res=MOD_MUL(res,x);
+        x=MOD_MUL(x,x);
+        y/=2;
+    }
+    return res;
+}
