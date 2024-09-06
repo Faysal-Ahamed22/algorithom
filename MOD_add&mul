@@ -29,13 +29,17 @@
         // precalculating factorial 
 
         const int N=2e5+2;
-        int fact[N];
+        int fact[N],ll inv_fact[N];
 
         void precalc(){
             fact[0]=1;
             for(int i=1;i<N;i++){
                 fact[i]=mul(fact[i-1],i);
             }
+
+              inv_fact[N - 1] = modPow(fact[N - 1], M - 2);  
+             for (int i = N - 2; i >= 0; i--) {
+             inv_fact[i] = mul(inv_fact[i + 1], i + 1);  
         }
 
       //finding ( x to the power of -1 ) % M; 
