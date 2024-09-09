@@ -1,0 +1,19 @@
+const ll mx=3e5+123; 
+vector<ll>adj[mx]; 
+bool vis[mx]; 
+ll sz[mx];
+ll n; 
+ 
+ll dfs ( ll node )
+{
+    vis[node]=1; 
+    ll cur_sz=1; 
+    
+    for(auto u: adj[node])
+    {
+        if(!vis[u])cur_sz+=(dfs(u)); 
+    }
+ 
+    sz[node]=cur_sz; 
+    return cur_sz; 
+}
