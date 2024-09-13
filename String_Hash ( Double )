@@ -1,0 +1,98 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll   long long
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define    gcd(a,b)      __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+ 
+const ll M = 127657753, M2 = 987654319;
+const ll mx=1e6+123; 
+const int p = 137, p2 = 277; 
+vector<pair<ll,ll>>powers(mx); 
+vector<pair<ll,ll>>pre(mx); 
+ 
+pair<ll,ll>hash_val ( string s , ll ok)
+{
+    ll hash=0,hash2=0; 
+    for(ll i=0; i<s.size(); i++)
+    {
+        hash=( hash* p)%M; 
+        hash=(hash+(s[i]-'a'+1))%M; 
+ 
+        hash2=(hash2*p2)%M2; 
+        hash2=(hash2+(s[i]-'a'+1))%M2; 
+ 
+ 
+ 
+       if(ok==1)
+       {
+        pre[i]={hash,hash2}; 
+       }
+    }
+ 
+    return {hash, hash2}; 
+}
+ 
+ 
+void solve(){
+ 
+     powers[0].first=1;
+     powers[0].second=1;  
+     for(ll i=1; i<mx; i++)powers[i].first=(powers[i-1].first*p)%M;
+      for(ll i=1; i<mx; i++)powers[i].second=(powers[i-1].second*p2)%M2;
+    string s,sub; 
+    cin>>s>>sub;
+    pair<ll,ll> sub_hash=hash_val(sub,0); 
+    pair<ll,ll> vv=hash_val(s,1); 
+    ll n=s.size(); 
+    ll m=sub.size(); ll st=1,ed=m; 
+    
+    
+    ll ans=0; 
+    if(pre[m-1]==sub_hash)ans++; 
+ 
+    while(ed<n)
+    {
+       //calculate for first hash 
+         ll val1=pre[ed].first; 
+         ll val2=(pre[st-1].first*powers[m].first)%M;
+         ll val=((val1-val2)); 
+         if(val<0){
+            val=(val+M)%M; 
+         }
+        // calculate for second hash  
+ 
+         ll vall1=pre[ed].second; 
+         ll vall2=(pre[st-1].second*powers[m].second)%M2;
+         ll vall=((vall1-vall2)); 
+         if(vall<0){
+            vall=(vall+M2)%M2; 
+         }
+         pair<ll,ll>pp={val,vall};
+ 
+         if(pp==sub_hash)ans++; 
+         st++; ed++;  
+ 
+    }
+ 
+       cout<<ans<<endl;
+        
+ 
+ 
+}
+ 
+int main()
+{
+    optimize();
+    ll t;
+    t=1; 
+    while(t--)
+    {
+        solve();
+    }
+}
+/*****************  ALHAMDULILLAH  *****************/
