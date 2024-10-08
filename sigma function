@@ -1,0 +1,145 @@
+//Sigma function is an interesting function in Number Theory. It is denoted by the Greek letter Sigma (σ).
+//This function actually denotes the sum of all divisors of a number. For example σ(24) = 1+2+3+4+6+8+12+24=60.
+// sigma(n)=((p1^(e1+1))-1)/(p-1) for every prime factorial , herer p1 is prime factorial and e1 is its occurance in n
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define    gcd(a,b)      __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+const int N=2e6+2;
+const ll M=1e9+7; 
+vector<bool>is_prime(N,1);
+vector<ll>prime;
+map<ll,ll>mp; 
+
+void sieve()
+{
+    is_prime[0]=false; 
+    is_prime[1]=false; 
+    for(ll i=2; i<N; i++)
+    {
+        if(is_prime[i]==true){
+            for(ll j=2*i; j<N; j+=i){
+                is_prime[j]=false;
+
+            }
+        }
+    }
+    for(ll i=0; i<N; i++){
+        if(is_prime[i])prime.push_back(i);
+    }
+}
+
+      long long mod(long long x){
+            return (x%M);
+        }
+        long long add(long long a, long long b){
+           return mod(mod(a)+mod(b));
+        }
+        long long mul(long long a, long long b){
+            return mod(mod(a)*mod(b));
+        }
+ 
+        //finding ( a to the power b ) % M; 
+ 
+        ll modPow(ll base, ll power){
+           if (!power) return 1; // base case
+            ll result = modPow(base, power/2);
+              result = (result * result) % M;
+            if (power & 1) result = (result * base) % M;
+            return result % M;
+        }
+ 
+        int fact[N];
+        ll inv_fact[N];
+        void precalc(){
+            fact[0]=1;
+            for(int i=1;i<N;i++){
+                fact[i]=mul(fact[i-1],i);
+                 
+            }
+ 
+             inv_fact[N - 1] = modPow(fact[N - 1], M - 2);  
+             for (int i = N - 2; i >= 0; i--) {
+             inv_fact[i] = mul(inv_fact[i + 1], i + 1);  
+    }
+        }
+ 
+        ll inv(ll x){
+            return modPow(x,M-2);
+        }
+ 
+        ll divide(ll a, ll b){
+            return mul(a,inv(b));
+        }
+ 
+        ll nCr(ll n, ll r){
+            if(r>n)return 0; 
+            if(r==n)return 1; 
+           return mul(fact[n], mul(inv_fact[r], inv_fact[n - r]));
+        }
+
+
+void getFactorization(ll x)
+{
+   
+    for(auto p:prime){
+        if(1LL*p*p>x)break; 
+        if(x%p==0){
+            while(x%p==0){
+                mp[p]++;
+                x/=p; 
+            }
+        }
+    }
+    if(x>1)mp[x]++;
+   
+}
+
+
+void solve(){
+
+   ll n,m; 
+   cin>>n>>m; 
+   getFactorization(n); 
+   for(auto &u:mp)
+   {
+     ll ase= u.second;
+      u.second=ase*m; 
+   }
+
+   //for(auto u:mp)cout<<u.first<<" "<<u.second<<endl;
+   ll ans=1; 
+    for(auto u:mp)
+    {
+        ll p=u.first,e=u.second; 
+        ll v1=modPow(p,e+1); v1--; 
+        if(v1<0)v1+=M; 
+       ll v2=inv(p-1); 
+        v1*=v2; 
+        ans=mul(ans,v1); 
+    }
+    cout<<ans<<endl;
+}
+
+int main()
+{
+    optimize();
+    ll t;
+    sieve(); 
+    precalc(); 
+    cin>>t;
+    for(ll tc=1 ; tc<=t; tc++)
+    {
+        mp.clear(); 
+        cout<<"Case "<<tc<<": "; 
+        solve();
+    }
+}
+/*****************  ALHAMDULILLAH  *****************/
