@@ -17,3 +17,24 @@ vector<string>subs( string s )
 
     return ret; 
 }
+
+// for array 
+
+vector<vector<ll>>subs(vector<ll>v )
+{
+    ll n=v.size(); 
+    ll subs_cnt=(1<<n);  
+    vector<vector<ll>>ret; 
+    for(ll i=0; i<subs_cnt; i++)
+    { 
+        vector<ll>temp;  
+        for(ll j=0; j<v.size(); j++)
+        {
+            if((i&(1<<j))!=0)temp.pb(v[j]);  
+        }
+
+        if(temp.size()!=0)ret.pb(temp); 
+    }
+
+    return ret; 
+}
