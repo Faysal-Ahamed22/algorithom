@@ -1,3 +1,4 @@
+//use 1 base indexing , tested and okk
 const int mx = 2e5+123;
 ll t[mx*4], a[mx];
  
