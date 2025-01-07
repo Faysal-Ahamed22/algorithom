@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  int
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define    gcd(a,b)      __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=2e6+123;ll block;
+ll a[mx],ans[mx],cnt;
+ll freq[mx];
+
+
+
+
+struct query
+{
+    ll l,r,idx;
+
+};
+
+bool comp( query q1, query q2 )
+{
+    if(q1.l/block==q2.l/block)return q1.r>q2.r;
+    return q1.l/block < q2.l/block;
+}
+
+
+void op(ll idx,ll val)
+{
+    ll x=a[idx];
+    ll ok=0;
+    if(freq[x]==0)ok=1;
+    else if(freq[x]==1)ok=2;
+
+
+    freq[x]+=val;
+     if(freq[x]==1 && ok==1)cnt++;
+       if(freq[x]==0 && ok==2)cnt--;
+
+
+}
+
+
+
+void solve(){
+
+   ll n,q;
+   cin>>n;
+   block=sqrt(n)+1;
+
+   for(ll i=0; i<n; i++)cin>>a[i];
+   cin>>q; 
+   vector<query>v(q);
+
+   for(ll i=0; i<q; i++)
+   {
+     cin>>v[i].l>>v[i].r;
+     v[i].l--;v[i].r--;
+     v[i].idx=i;
+
+   }
+
+   sort(v.begin(),v.end(),comp);
+
+   ll i=0,j=-1;
+
+   for(const auto &[l,r,idx]:v)
+   {
+      while(j<r)op(++j,1);
+      while(i>l)op(--i,1);
+
+      while(i<l)op(i++,-1);
+      while(j>r)op(j--,-1);
+      ans[idx]=cnt;
+   }
+
+   for(ll i=0; i<q; i++)cout<<ans[i]<<"\n";
+
+
+}
+
+int main()
+{
+    optimize();
+    ll t=1;
+    //cin>>t;
+    for(ll tc=1 ; tc<=t; tc++)
+    {
+        //cout<<"Case "<<tc<<": ";
+        solve();
+    }
+}
+/*****************  ALHAMDULILLAH  *****************/
