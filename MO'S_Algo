@@ -1,0 +1,101 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define    gcd(a,b)      __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=1e5+123,block=316; //sqrt of mx is 316
+ll a[mx],ans[mx],cnt;
+ll freq[mx];
+ 
+
+
+
+struct query
+{
+    ll l,r,idx; 
+
+    //comparison function for sorting 
+    bool operator<(const query &y)const{
+
+       // Current query x is being compared with other query y
+       ll x_block=l/block; 
+       ll y_block=y.l/block; 
+
+        // If x and y both lie in the same block, sort in non decreasing order of endpoint
+
+        if(x_block==y_block)return r<y.r; 
+
+        // x and y lie in different blocks
+
+        return x_block < y_block;
+
+    }
+
+};
+
+
+void op(ll idx,ll val)
+{
+    ll x=a[idx];
+    if(x>=mx)return; 
+    if(freq[x]==x)cnt--;  
+    freq[x]+=val; 
+     if(freq[x]==x)cnt++;  
+
+}
+
+
+
+void solve(){
+
+   ll n,q; 
+   cin>>n>>q; 
+
+   for(ll i=0; i<n; i++)cin>>a[i]; 
+   vector<query>v(q); 
+
+   for(ll i=0; i<q; i++)
+   {
+     cin>>v[i].l>>v[i].r; 
+     v[i].l--;v[i].r--; 
+     v[i].idx=i; 
+
+   }
+
+   sort(v.begin(),v.end()); 
+
+   ll i=0,j=-1; 
+
+   for(const auto &[l,r,idx]:v)
+   {
+      while(j<r)op(++j,1); 
+      while(i>l)op(--i,1); 
+
+      while(i<l)op(i++,-1); 
+      while(j>r)op(j--,-1); 
+      ans[idx]=cnt; 
+   }
+
+   for(ll i=0; i<q; i++)cout<<ans[i]<<endl;
+
+
+}
+
+int main()
+{
+    optimize();
+    ll t=1;
+    //cin>>t;
+    for(ll tc=1 ; tc<=t; tc++)
+    {
+        //cout<<"Case "<<tc<<": "; 
+        solve();
+    }
+}
+/*****************  ALHAMDULILLAH  *****************/
