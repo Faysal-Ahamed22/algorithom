@@ -21,10 +21,10 @@ pair<ll,ll>hash_val ( string s , ll ok)
     for(ll i=0; i<s.size(); i++)
     {
         hash=( hash* p)%M; 
-        hash=(hash+(s[i]-'a'+1))%M; 
+        hash=(hash+(s[i]-'0'+1))%M; 
  
         hash2=(hash2*p2)%M2; 
-        hash2=(hash2+(s[i]-'a'+1))%M2; 
+        hash2=(hash2+(s[i]-'0'+1))%M2; 
  
  
  
