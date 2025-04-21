@@ -1,0 +1,29 @@
+
+const ll mx=1e3+12; 
+ll ar[mx][mx]; 
+ll pf[mx][mx]; 
+
+void solve(){
+
+    ll n; cin>>n; 
+    for(ll i=1; i<=n; i++)
+    {
+        for(ll j=1; j<=n; j++)
+        {
+            cin>>ar[i][j]; 
+            pf[i][j]=ar[i][j]+pf[i-1][j]+pf[i][j-1]-pf[i-1][j-1]; 
+        }
+    }
+
+    ll q; 
+    cin>>q; 
+    while(q--)
+    {
+        ll x1,y1,x2,y2; 
+        // sum of rectangle top left ( x1,y1 ) bottom right ( x2,y2 )
+        cin>>x1>>y1>>x2>>y2; 
+        cout<<pf[x2][y2]-pf[x1-1][y2]-pf[x2][y1-1]+pf[x1-1][y1-1]<<endl;
+
+    }
+
+}
