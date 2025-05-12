@@ -1,0 +1,13 @@
+ll find_mex(const vector<ll>& nums) {
+    unordered_set<ll> seen;
+    for (ll num : nums) {
+        if (num >= 0)
+            seen.insert(num);
+    }
+
+    ll mex = 0;
+    while (seen.count(mex)) {
+        ++mex;
+    }
+    return mex;
+}
