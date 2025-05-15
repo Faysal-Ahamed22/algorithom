@@ -1,0 +1,21 @@
+const ll mx=1e5+123; 
+vector<ll>adj[mx]; 
+bool vis[mx],col[mx]; 
+ 
+
+bool dfs(ll node, ll c)
+{
+   vis[node]=1; 
+   col[node]=c; 
+
+   for(auto u:adj[node]){
+     if(!vis[u]){
+        if(dfs(u,c^1)==false)return false; 
+     }
+     else{
+        if(col[node]==col[u])return false;
+     }
+   }
+
+   return true; 
+}
