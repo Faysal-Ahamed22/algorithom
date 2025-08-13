@@ -10,6 +10,10 @@
         long long mul(long long a, long long b){
             return mod(mod(a)*mod(b));
         }
+      ll sub(ll a, ll b) {
+       ll res = ( (a % M) - (b % M) + M ) % M;
+      return res;
+      }
  
         //finding ( a to the power b ) % M; 
  
