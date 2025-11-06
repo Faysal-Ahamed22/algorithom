@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+
+int cutRod(vector<int> &price, int n)
+{
+	int sz=price.size(); 
+	vector<int>prev(n+3,0),cur(n+3,0); 
+
+	for(int i=1; i<=n; i++)prev[i]=price[0]*i; 
+	
+	for(int i=2; i<=sz; i++)
+	{
+		for(int j=1; j<=n; j++)
+		{
+			int nt=0+prev[j]; 
+			int tk=0;
+			if(j>=i)tk=cur[j-i]+price[i-1]; 
+			cur[j]=max(tk,nt);  
+
+		}
+		prev=cur;
+	}
+
+	return prev[n]; 
+
+}
+//https://www.naukri.com/code360/problems/rod-cutting-problem_800284
