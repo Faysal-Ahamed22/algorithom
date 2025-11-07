@@ -1,0 +1,45 @@
+
+// complexity O ( n ^ 2 ) 
+
+#include<bits/stdc++.h>
+
+int longestIncreasingSubsequence(int arr[], int n)
+{
+   vector<int>dp(n,1),hash(n); 
+   int ans=1,last=0; 
+   for(int i=0; i<n; i++)
+   {
+       hash[i]=i; 
+       for(int j=0; j<i; j++)
+       {
+           if(arr[i]>arr[j]  && dp[i]<1+dp[j]){
+               dp[i]=max(dp[i],dp[j]+1); 
+               hash[i]=j;  
+           }
+           if(dp[i]>ans)
+           {
+               ans=dp[i]; 
+               last=i; 
+           }
+       }
+   }
+
+   vector<int>lis; 
+   lis.push_back(arr[last]); 
+   while(hash[last]!=last)
+   {
+       last=hash[last]; 
+       lis.push_back(arr[last]); 
+   }
+   reverse(lis.begin(),lis.end()); 
+
+   //here hash is used for backtrack and print lis 
+   //for(auto u:lis )cout<<u<<" "; 
+   //cout<<endl;
+   return ans; 
+   
+}
+
+// complexity O ( n log n ) 
+
+
