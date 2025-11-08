@@ -1,0 +1,55 @@
+
+#include<bits/stdc++.h>
+int longestBitonicSubsequence(vector<int>& arr, int n)
+{
+	 vector<int>temp; 
+    temp.push_back(arr[0]); 
+    
+	vector<int>dp1,dp2; 
+
+  for(int i=0; i<n; i++)
+  {
+      if(arr[i]>temp.back()) temp.push_back(arr[i]);
+
+      else{
+
+          int idx=lower_bound(temp.begin(),temp.end(),arr[i])-temp.begin(); 
+          temp[idx]=arr[i]; 
+
+      }
+
+       dp1.push_back(temp.size()); 
+  }
+
+    reverse(arr.begin(),arr.end()); 
+	
+
+	temp.clear(); temp.push_back(arr[0]); 
+
+	 for(int i=0; i<n; i++)
+    {
+      if(arr[i]>temp.back()) temp.push_back(arr[i]);
+
+      else{
+
+          int idx=lower_bound(temp.begin(),temp.end(),arr[i])-temp.begin(); 
+          temp[idx]=arr[i];  
+
+      }
+
+       dp2.push_back(temp.size()); 
+  }
+   reverse(dp2.begin(),dp2.end()); 
+  int ret=0; 
+
+  for(int i=0; i<n; i++)
+  {
+	 int val=dp1[i]+dp2[i]-1; 
+      ret=max(ret,val); 
+  }
+
+  return ret; 
+
+}  
+
+
