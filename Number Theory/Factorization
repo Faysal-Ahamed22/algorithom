@@ -1,0 +1,17 @@
+vector<ll> getFactorization(ll x)
+{
+    vector<ll> ret;
+    for(auto p:prime){
+        if(1LL*p*p>x)break; 
+        if(x%p==0){
+            while(x%p==0){
+                ret.push_back(p);
+                x/=p; 
+            }
+        }
+    }
+    if(x>1)ret.push_back(x);
+    return ret; 
+
+   
+}
