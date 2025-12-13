@@ -1,0 +1,81 @@
+/******************************************************/
+/******************************************************/
+/**            BISMILLAHIR RAHMANIR RAHIM            **/
+/**         Md.Faysal Ahamed - ER3N YAGER            **/
+/**  Department of Computer Science and Engineering  **/
+/**               Barisal University                 **/
+/**               It's time to Roar.                 **/
+/******************************************************/
+/******************************************************/
+#include<bits/stdc++.h>
+using namespace std;
+#define ll   long long
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define    gcd(a,b)      __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=1e5+123; 
+vector<ll>adj[mx]; 
+ll lvl[mx];
+map<ll,ll>par;
+
+void bfs( ll s){
+    memset(lvl, -1 , sizeof(lvl));
+
+    lvl[s]=0;
+    queue<ll>q; 
+    q.push(s);
+    while(!q.empty()){
+        ll u=q.front();
+        q.pop();
+        for(auto v:adj[u]){
+            if(lvl[v]==-1){
+                lvl[v]=lvl[u]+1; 
+                par[v]=u;
+                q.push(v);
+            }
+        }
+    }
+}
+
+void solve(){
+
+    ll n,m; 
+    cin>>n>>m; 
+    for(ll i=0; i<m; i++){
+        ll u,v; 
+        cin>>u>>v; 
+        adj[u].pb(v);
+        adj[v].pb(u);
+    }
+    bfs(1);
+    ll t=n; 
+    vector<ll>ans; 
+    while(!par[t]==0){
+        ans.pb(t);
+        t=par[t];
+    }
+
+    if(lvl[n]==-1)cout<<"IMPOSSIBLE"<<endl;
+    else {
+        cout<<lvl[n]+1<<endl;
+        cout<<1<<" ";
+        for(ll i=ans.size()-1; i>=0; i--)cout<<ans[i]<<" ";
+        cout<<endl;
+    }
+
+    
+}
+
+int main()
+{
+    optimize();
+   
+        solve();
+    
+}
+/*****************  ALHAMDULILLAH  *****************/
