@@ -1,0 +1,182 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define pb push_back
+#define yes cout << "YES" << endl
+#define no cout << "NO" << endl
+#define all(x) (x).begin(), (x).end()
+#define gcd(a, b) __gcd(a, b)
+#define lcm(a, b) (a * b) / __gcd(a, b)
+#define optimize()                \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0);                   \
+    cout.tie(0);
+
+ll n, m;
+const ll mx = 3e5 + 123;
+
+vector<pair<ll, ll>> adj[mx];
+vector<pair<ll, ll>> edg(mx);
+
+vector<ll> tin(mx), low(mx), bri(mx);
+vector<bool> vis(mx);
+ll timer = 0;
+
+vector<vector<ll>> tree_graph;
+vector<ll> lvl;
+ll f;
+
+//================ BFS ON BRIDGE TREE ================
+void bfs(ll node)
+{
+    lvl.assign(tree_graph.size(), -1);
+
+    queue<ll> q;
+    q.push(node);
+    lvl[node] = 0;
+
+    while (!q.empty())
+    {
+        ll u = q.front();
+        q.pop();
+
+        for (auto v : tree_graph[u])
+        {
+            if (lvl[v] == -1)
+            {
+                lvl[v] = lvl[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+
+    ll mx = 0;
+    for (ll i = 0; i < (ll)lvl.size(); i++)
+    {
+        if (lvl[i] > mx)
+        {
+            mx = lvl[i];
+            f = i;
+        }
+    }
+}
+
+//================ BRIDGES ===========================
+void dfs(ll node, ll par)
+{
+    vis[node] = 1;
+    tin[node] = low[node] = ++timer;
+
+    for (auto it : adj[node])
+    {
+        ll child = it.first;
+        ll idx = it.second;
+
+        if (idx == par)
+            continue;
+
+        if (!vis[child])
+        {
+            dfs(child, idx);
+            low[node] = min(low[node], low[child]);
+
+            if (low[child] > tin[node])
+                bri[idx] = 1;
+        }
+        else
+        {
+            low[node] = min(low[node], tin[child]);
+        }
+    }
+}
+
+//======== COMPRESS COMPONENTS ======================
+void compress_dfs(ll node, ll id, vector<ll> &comp)
+{
+    comp[node] = id;
+
+    for (auto &it : adj[node])
+    {
+        ll child = it.first;
+        ll idx = it.second;
+
+        if (comp[child] == -1 && !bri[idx])
+            compress_dfs(child, id, comp);
+    }
+}
+
+void solve()
+{
+    cin >> n >> m;
+
+    for (ll i = 0; i <= n; i++)
+    {
+        adj[i].clear();
+        vis[i] = 0;
+        bri[i] = 0;
+    }
+
+    for (ll i = 0; i < m; i++)
+    {
+        ll u, v;
+        cin >> u >> v;
+
+        edg[i] = {u, v};
+        adj[u].pb({v, i});
+        adj[v].pb({u, i});
+    }
+
+    timer = 0;
+
+    for (ll i = 1; i <= n; i++)
+        if (!vis[i])
+            dfs(i, -1);
+
+    vector<ll> comp(n + 1, -1);
+    ll id = 0;
+
+    for (ll i = 1; i <= n; i++)
+        if (comp[i] == -1)
+            compress_dfs(i, id++, comp);
+
+    if (id <= 1)
+    {
+        cout << 0 << endl;
+        return;
+    }
+
+    tree_graph.assign(id, vector<ll>());
+
+    for (ll i = 0; i < m; i++)
+    {
+        if (bri[i])
+        {
+            ll u = edg[i].first;
+            ll v = edg[i].second;
+
+            ll cu = comp[u];
+            ll cv = comp[v];
+
+            tree_graph[cu].pb(cv);
+            tree_graph[cv].pb(cu);
+        }
+    }
+
+    bfs(0);
+    bfs(f);
+
+    ll diameter = 0;
+    for (auto x : lvl)
+        diameter = max(diameter, x);
+
+    cout << diameter << endl;
+}
+
+int main()
+{
+    optimize();
+    ll t = 1;
+    // cin >> t;
+    while (t--)
+        solve();
+}
