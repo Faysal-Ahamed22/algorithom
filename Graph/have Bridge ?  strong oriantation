@@ -1,0 +1,94 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define pb push_back
+#define yes cout << "YES" << endl
+#define no cout << "NO" << endl
+#define all(x) (x).begin(), (x).end()
+#define gcd(a, b) __gcd(a, b)
+#define lcm(a, b) (a * b) / __gcd(a, b)
+#define optimize()                \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0);                   \
+    cout.tie(0);
+
+const ll mx = 2e5 + 123;
+vector<ll> adj[mx];
+bool vis[mx];
+ll tin[mx], low[mx], timer = 0;
+vector<pair<ll, ll>> ans;
+bool ok = 0;
+ll n, m;
+
+void dfs(ll u, ll p = -1)
+{
+    vis[u] = true;
+    tin[u] = low[u] = timer++;
+
+    for (auto child : adj[u])
+    {
+        if (child == p)
+            continue;
+
+        if (vis[child])
+        {
+            if (tin[u] > tin[child])
+                ans.pb({u, child}); // back edge child is dada
+            low[u] = min(low[u], tin[child]);
+        }
+        else
+        {
+            // Tree-edge: child is a child
+            ans.pb({u, child});
+            dfs(child, u);
+            low[u] = min(low[u], low[child]);
+
+            if (low[child] > tin[u])
+                ok = 1;
+        }
+    }
+}
+
+void solve()
+{
+
+    cin >> n >> m;
+
+    for (ll i = 0; i < m; i++)
+    {
+        ll u, v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+    }
+
+    dfs(1);
+
+    for (ll i = 1; i <= n; i++)
+    {
+        if (!vis[i])
+            ok = 1;
+    }
+
+    if (ok)
+        cout << "IMPOSSIBLE" << endl;
+
+    else
+    {
+        for (auto u : ans)
+            cout << u.first << " " << u.second << endl;
+    }
+}
+
+int main()
+{
+    optimize();
+    ll t;
+    t = 1;
+    for (ll tc = 1; tc <= t; tc++)
+    {
+        // cout<<"Case "<<tc<<": ";
+        solve();
+    }
+}
+/*****************  ALHAMDULILLAH  *****************/
