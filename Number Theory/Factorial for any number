@@ -1,0 +1,28 @@
+
+
+void fact(ll n)
+{
+    vector<ll>res; 
+    res.pb(1); 
+
+    for(int x=2; x<=n; x++)
+    {
+        ll carry=0; 
+
+        for(int i=0; i<res.size(); i++)
+        {
+            ll val=res[i]*x+carry; 
+            res[i]=val%10; 
+            carry=val/10; 
+        }
+
+        while(carry){
+            res.pb(carry%10); 
+            carry/=10; 
+        }
+    }
+
+    for(ll i=res.size()-1; i>=0; i--)cout<<res[i]; 
+    cout<<endl;
+}
+
